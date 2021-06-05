@@ -1,0 +1,7 @@
+CALENG2;Integral Calculus;nan;EC1;nan;TH;915.0;1045.0
+LBYCPEI;Object Oriented Programming Laboratory;nan;EQ1;nan;MW;915.0;1215.0
+ENGPHYS;Physics Fundamentals for Engineering Majors;nan;EA1;nan;TH;1100.0;1230.0
+LBYEC2B;Computer Fundamentals and Programming 2;nan;EQ1;nan;H;1430.0;1730.0
+GERIZAL;Life and Works of Rizal;nan;YY32;MACAPINLAC, MARCELINO JR.;MW;1245.0;1415.0
+LCFAITH;A Faith World Living;nan;YY5;MACARAAN, WILLARD ENRIQUE R.;MW;1430.0;1600.0
+LCLSONE;Lasallian Studies One;nan;YY9;PANTALEON, KAREN;T;1300.0;1500.0
