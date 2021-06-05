@@ -167,7 +167,7 @@ class enlistMain:
         self.root = root
         root.title("DLSU Class Schedule Organizer")
 
-        root.protocol("WM_DELETE_WINDOW", lambda: exit())
+        root.protocol("WM_DELETE_WINDOW", lambda: sys.exit(0))
         mainframe = Frame(root)
         mainframe.grid(column = 0, row = 0, padx = 8, pady = 8)
 
