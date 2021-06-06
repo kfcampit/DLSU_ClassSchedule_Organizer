@@ -214,7 +214,7 @@ class enlistMain:
         checkList = [self.courseCde.get(), self.courseName.get(), self.courseNo.get(), self.section.get(), self.facultyName.get(), self.day.get(), self.startTime.get(), self.endTime.get()]
 
         with open("schedule\\sched.txt", mode = "a", encoding = "utf8") as writeText:
-            writeText.write(";".join(list(map(str, checkList))))
+            writeText.write(";".join(list(map(str, checkList))) + "\n")
         
         self.gotoSchedule()
         
