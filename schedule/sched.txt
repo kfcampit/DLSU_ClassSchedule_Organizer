@@ -1,7 +1,8 @@
-LBYEC2B;Computer Fundamentals and Programming 2;nan;EQ1;nan;H;1430.0;1730.0
-GERIZAL;Life and Works of Rizal;nan;YY32;MACAPINLAC, MARCELINO JR.;MW;1245.0;1415.0
-LCFAITH;A Faith World Living;nan;YY5;MACARAAN, WILLARD ENRIQUE R.;MW;1430.0;1600.0
-LCLSONE;Lasallian Studies One;nan;YY9;PANTALEON, KAREN;T;1300.0;1500.
-CALENG2;Integral Calculus;nan;ED1;nan;MW;915;1045
-LBYCPEI;OOP Laboratory;nan;EQ2;nan;TH;915;1215
-ENGPHYS;Engineering Physics;nan;EA2;nan;MW;1100;1230
+DISCRMT;Discrete Mathematics;3673;EQ2;nan;TH;915;1045
+LBYCPA2;Data Structures and Algorithms Lab;3281;EQ2;nan;MW;0730;1030
+LBYEC2M;Fundamentals of Electrical Cirvuits Lab;3111;EQ3;nan;T;1100;1400
+ENGCHEM;Chemistry for Engineers;2275;EQ2;nan;TH;1430;1600
+LBYCH1A;Chemistry for Engineers Lab;5058;EQ3;nan;H;1100;1400
+FUNDCKT;Fundamentals of Electrical Circuits Lec;4649;EQ1;nan;MW;1245;1415
+CALENG2;Differential Equations;2799;EF1;nan;MW;1100;1230
+DATSRAL;Data Structures and Algorithm;2644;EQ2;nan;M;1500;1600

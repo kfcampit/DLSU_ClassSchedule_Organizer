@@ -5,6 +5,8 @@ import pandas as pd
 import os
 import sys
 
+from pandas.core.accessor import delegate_names
+
 
 class schedulePage:
     def __init__(self, root):
@@ -50,7 +52,7 @@ class schedulePage:
         self.optionList = [n[0] for n in self.classTimes]
 
         OptionMenu(mainframe, self.titleText, *self.optionList).grid(column = 1, row = 3, ipadx = 90, sticky = E)
-        ttk.Button(mainframe, text = "View", width = 16, command = self.view).grid(column = 2, row = 3, sticky = W, padx = 4, pady = 4)
+        ttk.Button(mainframe, text = "Edit", width = 16, command = self.edit).grid(column = 2, row = 3, sticky = W, padx = 4, pady = 4)
         ttk.Button(mainframe, text = "Delete", width = 16, command = self.delete).grid(column = 2, row = 4, sticky = W, padx = 4, pady = 4)
         ttk.Button(mainframe, text = "Enlist", width = 16, command = self.gotoEnlist).grid(column = 1, row = 5, sticky = W, padx = 4, pady = 4)
         ttk.Button(mainframe, text = "Exit", width = 16, command = self.back).grid(column = 2, row = 5, sticky = E, padx = 4, pady = 4)
@@ -105,29 +107,20 @@ class schedulePage:
         self.classTimes = [[i[0], i[-3], int(float(i[-2])), int(float(i[-1])) ] for i in self.classSched]
         pass
 
-    def view(self, *args):
-        root = Toplevel()
-        root.title("View " + self.titleText.get())
-        mainframe = (root)
-
+    def edit(self, *args):
         loadClass = list(filter(lambda i: (i[0] == self.titleText.get()), self.classSched))
         viewClass = loadClass[0]
 
-        Label(mainframe, text = "View Course", font = Font(family = "Corbel", size = 16, weight = "bold")).grid(columnspan = 2, column = 1, row = 1, pady = 4, sticky = (W, E))
+        with open("schedule\\sched.txt", mode = "r", encoding = "utf8") as removeLine:
+            lines = removeLine.readlines()
+        with open("schedule\\sched.txt", mode = "w", encoding = "utf8") as rewrite:
+            for line in lines:
+                if not self.titleText.get() in line:
+                    rewrite.write(line[:-1] + "\n")
 
-        Label(mainframe, text = viewClass[0], width = 32, font = Font(size = 12, family =  "Helvetica"), borderwidth = 1, relief = "groove").grid(columnspan = 2, column = 1, row = 2, sticky = (W, E))
-
-        Label(mainframe, text = viewClass[1], width = 32, font = Font(size = 12, family =  "Helvetica"), borderwidth = 1, relief = "groove").grid(columnspan = 2, column = 1, row = 3, sticky = (W, E))
-        
-        Label(mainframe, text = viewClass[4], width = 32, font = Font(size = 12, family =  "Helvetica"), borderwidth = 1, relief = "groove").grid(columnspan = 2, column = 1, row = 4, sticky = (W, E))
-
-        Label(mainframe, text = viewClass[2], width = 16, font = Font(size = 12, family =  "Helvetica"), borderwidth = 1, relief = "groove").grid(column = 1, row = 5, sticky = (W, E))
-
-        Label(mainframe, text = viewClass[3], width = 16, font = Font(size = 12, family =  "Helvetica"), borderwidth = 1, relief = "groove").grid(column = 2, row = 5, sticky = (W, E))
-        
-        Label(mainframe, text = viewClass[5], width = 16, font = Font(size = 12, family =  "Helvetica"), borderwidth = 1, relief = "groove").grid(column = 1, row = 6, sticky = (W, E))
-
-        Label(mainframe, text = str(int(float(viewClass[6]))) + " - " + str(int(float(viewClass[7]))), width = 16, font = Font(size = 12, family =  "Helvetica"), borderwidth = 1, relief = "groove").grid(column = 2, row = 6, sticky = (W, E))
+        self.root.destroy()
+        self.new_window = Tk()
+        editSched(self.new_window, viewClass[0], viewClass[2], viewClass[1], viewClass[4], viewClass[3], viewClass[5], viewClass[6], viewClass[7])
 
     def delete(self, *args):
         with open("schedule\\sched.txt", mode = "r", encoding = "utf8") as removeLine:
@@ -222,6 +215,82 @@ class enlistMain:
         self.root.destroy()
         self.new_window = Tk()
         schedulePage(self.new_window)
+
+class editSched:
+    def __init__(self, root, courseCode, courseNum, courseName, facultyName, section, day, startTime, endTime):
+        if not os.path.exists("schedule\\sched.txt"):
+            if os.path.isdir("schedule"):
+                try:
+                    open("schedule\\sched.txt","x")
+                except:
+                    pass
+            else:
+                os.mkdir("schedule")
+                open("schedule\\sched.txt","x")
+
+        self.root = root
+        root.title("DLSU Class Schedule Organizer")
+
+        root.protocol("WM_DELETE_WINDOW", lambda: sys.exit(0))
+        mainframe = Frame(root)
+        mainframe.grid(column = 0, row = 0, padx = 8, pady = 8)
+
+        Label(mainframe, text = "Enlistment", font = Font(family = "Corbel", size = 16, weight = "bold")).grid(columnspan = 2, column = 1, row = 1, pady = 4, sticky = (W, E))
+        ttk.Separator(mainframe, orient = HORIZONTAL).grid(columnspan = 2, column = 1, row = 2, ipadx = 160, pady = 4)
+
+        self.courseCde = StringVar()
+        self.courseCde.set(courseCode)
+        ttk.Label(mainframe, text = "Course Code: ", font = Font(family = "Corbel")).grid(column = 1, row = 3, padx = 4, pady = 5, sticky = W)
+        ttk.Entry(mainframe, textvariable = self.courseCde, width = 32).grid(column = 2, row = 3, padx = 4, pady = 5, sticky = W)
+
+        self.courseNo = StringVar()
+        self.courseNo.set(courseNum)
+        ttk.Label(mainframe, text = "Course Number: ", font = Font(family = "Corbel")).grid(column = 1, row = 4, padx = 4, pady = 5, sticky = W)
+        ttk.Entry(mainframe, textvariable = self.courseNo, width = 32).grid(column = 2, row = 4, padx = 4, pady = 5, sticky = W)
+
+        self.courseName = StringVar()
+        self.courseName.set(courseName)
+        ttk.Label(mainframe, text = "Course Name: ", font = Font(family = "Corbel")).grid(column = 1, row = 5, padx = 4, pady = 5, sticky = W)
+        ttk.Entry(mainframe, textvariable = self.courseName, width = 32).grid(column = 2, row = 5, padx = 4, pady = 5, sticky = W)
+
+        self.facultyName = StringVar()
+        self.facultyName.set(facultyName)
+        ttk.Label(mainframe, text = "Faculty Name: ", font = Font(family = "Corbel")).grid(column = 1, row = 6, padx = 4, pady = 5, sticky = W)
+        ttk.Entry(mainframe, textvariable = self.facultyName, width = 32).grid(column = 2, row = 6, padx = 4, pady = 5, sticky = W)
+        
+        self.section = StringVar()
+        self.section.set(section)
+        ttk.Label(mainframe, text = "Section: ", font = Font(family = "Corbel")).grid(column = 1, row = 7, padx = 4, pady = 5, sticky = W)
+        ttk.Entry(mainframe, textvariable = self.section, width = 32).grid(column = 2, row = 7, padx = 4, pady = 5, sticky = W)
+
+        self.day = StringVar()
+        self.day.set(day)
+        ttk.Label(mainframe, text = "Day: ", font = Font(family = "Corbel")).grid(column = 1, row = 8, padx = 4, pady = 5, sticky = W)
+        ttk.Entry(mainframe, textvariable = self.day, width = 32).grid(column = 2, row = 8, padx = 4, pady = 5, sticky = W)
+
+        self.startTime = StringVar()
+        self.startTime.set(startTime)
+        ttk.Label(mainframe, text = "Start Time: ", font = Font(family = "Corbel")).grid(column = 1, row = 9, padx = 4, pady = 5, sticky = W)
+        ttk.Entry(mainframe, textvariable = self.startTime, width = 32).grid(column = 2, row = 9, padx = 4, pady = 5, sticky = W)
+
+        self.endTime = StringVar()
+        self.endTime.set(endTime)
+        ttk.Label(mainframe, text = "End Time: ", font = Font(family = "Corbel")).grid(column = 1, row = 10, padx = 4, pady = 5, sticky = W)
+        ttk.Entry(mainframe, textvariable = self.endTime, width = 32).grid(column = 2, row = 10, padx = 4, pady = 5, sticky = W)
+
+        ttk.Button(mainframe, text = "Save", width = 16, command = self.save).grid(column = 2, row = 11, padx = 4, sticky = E, pady = 16)
+        
+
+    def save(self, *args):
+        checkList = [self.courseCde.get(), self.courseName.get(), self.courseNo.get(), self.section.get(), self.facultyName.get(), self.day.get(), self.startTime.get(), self.endTime.get()]
+
+        with open("schedule\\sched.txt", mode = "a", encoding = "utf8") as writeText:
+            writeText.write(";".join(list(map(str, checkList))) + "\n")
+        
+        self.root.destroy()
+        self.new_window = Tk()
+        schedulePage(self.new_window)
+        
 
 root = Tk()
 enlistMain(root)
